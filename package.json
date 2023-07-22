@@ -8,8 +8,8 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest src",
+    "test:watch": "jest src --watch"
   },
   "repository": {
     "type": "git",
