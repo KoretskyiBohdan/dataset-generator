@@ -75,4 +75,41 @@ describe('Lib', () => {
 
     expect(users.length).toBe(100);
   });
+
+  it('should support nested objects', () => {
+    const dumbData = {
+      id: [1, 2, 3],
+      name: {
+        first: ['John', 'Andy'],
+        last: ['Smith', 'King'],
+      },
+    };
+
+    const produce = create(dumbData);
+
+    const user = produce(1)[0];
+
+    expect(user).toHaveProperty('name');
+    expect(user.name.first).toBeOneOf(dumbData.name.first);
+    expect(user.name.last).toBeOneOf(dumbData.name.last);
+  });
+
+  it('should any level of nested objects', () => {
+    const dumbData = {
+      address: {
+        street: {
+          number: [1, 2, 34],
+          name: ['Fifth', 'george'],
+        },
+      },
+    };
+
+    const produce = create(dumbData);
+
+    const data = produce(1)[0];
+
+    expect(data).toHaveProperty('address');
+    expect(data.address.street.number).toBeOneOf(dumbData.address.street.number);
+    expect(data.address.street.name).toBeOneOf(dumbData.address.street.name);
+  });
 });

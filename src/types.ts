@@ -1,7 +1,7 @@
 export type ValueType = string | number | boolean;
 
 export type ShapeType = {
-  [key: string]: ValueType[] | Symbol;
+  [key: string]: ValueType[] | Symbol | ShapeType;
 };
 
 export type MapType<Type> = {
@@ -9,5 +9,7 @@ export type MapType<Type> = {
     ? Type[Property][0]
     : Type[Property] extends Symbol
     ? number
+    : Type[Property] extends object
+    ? MapType<Type[Property]>
     : any;
 };
