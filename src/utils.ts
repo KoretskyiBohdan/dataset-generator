@@ -1,7 +1,6 @@
 import { AnyObject } from './types';
 import { MAX_FLOAT_NUMBER, DEFINED, REFERENCE_REG_EXP } from './constants';
-
-const LIST_OF_DEFINED = Object.keys(DEFINED).map<symbol>((key) => DEFINED[key]);
+import { isString } from './guards';
 
 export const getRandomNumber = (max = Number.MAX_SAFE_INTEGER) => Math.round(Math.random() * max);
 
@@ -9,9 +8,23 @@ export const getRandomFloatNumber = (fraction = 2) => {
   return Number((Math.random() * MAX_FLOAT_NUMBER).toFixed(fraction));
 };
 
-export const getObjectProperty = (obj: AnyObject, path = ''): any => {
-  const pathArr = path.split('.');
+export const getRandomArrayValue = <T extends any[]>(array: T): T[0] => {
+  const index = getRandomNumber(array.length - 1);
+  return array[index];
+};
 
+export const isItHasAReference = (v: string) => REFERENCE_REG_EXP.test(v);
+
+/**
+ *
+ * @param obj {object}
+ * @param path - path to the ptoperty. Should looks like 'property.property.property'
+ * @returns {any}
+ */
+export const getObjectProperty = (obj: AnyObject, path = ''): any => {
+  if (!isString(path)) return;
+
+  const pathArr = path.split('.');
   let result = obj;
 
   while (pathArr.length) {
@@ -23,26 +36,11 @@ export const getObjectProperty = (obj: AnyObject, path = ''): any => {
   return result;
 };
 
-interface IGetRandomArrayValue {
-  <T extends any[]>(array: T): T[0];
-}
-
-export const getRandomArrayValue: IGetRandomArrayValue = (array) => {
-  const index = getRandomNumber(array.length - 1);
-  return array[index];
-};
-
-export const isObject = (item: any) => Object.prototype.toString.call(item) === '[object Object]';
-
-export const isFunction = (item: any) => typeof item === 'function';
-
-export const isDefinedType = (value: any) => LIST_OF_DEFINED.includes(value);
-
-export const isItHasAReference = (value: any) =>
-  typeof value === 'string' && REFERENCE_REG_EXP.test(value);
-
 export const resolveReference = (root: AnyObject, value: string) => {
-  return value.replaceAll(REFERENCE_REG_EXP, (_, path) => getObjectProperty(root, path));
+  return value.replaceAll(REFERENCE_REG_EXP, (_, path) => {
+    const resolved = getObjectProperty(root, path);
+    return resolved !== undefined ? resolved : `{${path}}`;
+  });
 };
 
 export const definedTypeResolver = (value: symbol, index: number) => {

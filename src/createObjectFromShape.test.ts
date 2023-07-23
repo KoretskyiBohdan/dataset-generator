@@ -1,7 +1,7 @@
 import createObjectFromShape from './createObjectFromShape';
 import { DEFINED } from './constants';
 
-describe('createObjectFromShape', () => {
+describe('createObjectFromShape.ts', () => {
   it('should supports defined ID type', () => {
     const shape = {
       id: DEFINED.ID,
@@ -42,8 +42,10 @@ describe('createObjectFromShape', () => {
     const timestamp = Date.now();
 
     const obj = createObjectFromShape(shape);
+    // performing of js code can take some time
+    const allowedDiff = 1000;
 
-    expect(obj.date).toBe(timestamp);
+    expect(Math.abs(obj.date - timestamp)).toBeLessThan(allowedDiff);
   });
 
   it('should supports defined RANDON_INTEGER type', () => {

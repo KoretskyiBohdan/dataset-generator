@@ -1,16 +1,14 @@
 import {
-  isObject,
-  isFunction,
-  isDefinedType,
   definedTypeResolver,
   getRandomArrayValue,
   isItHasAReference,
   resolveReference,
 } from './utils';
-import { ShapeType, MapType, AnyFn } from './types';
+import { isFunction, isString, isObject, isDefinedType } from './guards';
+import { ShapeType, ResultType, AnyObject } from './types';
 
 interface ICreateObjectFromShape {
-  <T extends ShapeType>(shape: T, index?: number, ref?: Record<string, any>): MapType<T>;
+  <T extends ShapeType>(shape: T, index?: number, ref?: AnyObject): ResultType<T>;
 }
 /**
  *
@@ -20,32 +18,34 @@ interface ICreateObjectFromShape {
  * @returns {object}
  */
 const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0, ref) => {
-  const obj = {};
+  const obj: AnyObject = {};
   // if we are on the top level than root is this level object
   const root = ref || obj;
 
-  Object.keys(shape).forEach((key) => {
+  for (const key in shape) {
+    if (!Object.hasOwn(shape, key)) continue;
+
     const value = shape[key];
     let resolvedValue = null;
 
     if (Array.isArray(value)) {
       resolvedValue = getRandomArrayValue(value);
 
-      if (isItHasAReference(resolvedValue)) {
+      if (isString(resolvedValue) && isItHasAReference(resolvedValue)) {
         resolvedValue = resolveReference(root, resolvedValue);
       }
     } else if (isFunction(value)) {
-      resolvedValue = (value as AnyFn)();
+      resolvedValue = value(index);
     } else if (isObject(value)) {
-      resolvedValue = createObjectFromShape((shape as object)[key], index, root);
+      resolvedValue = createObjectFromShape(value, index, root);
     } else if (isDefinedType(value)) {
-      resolvedValue = definedTypeResolver(value as symbol, index);
+      resolvedValue = definedTypeResolver(value, index);
     }
 
     obj[key] = resolvedValue;
-  });
+  }
 
-  return obj as MapType<typeof shape>;
+  return obj as ResultType<typeof shape>;
 };
 
 export default createObjectFromShape;

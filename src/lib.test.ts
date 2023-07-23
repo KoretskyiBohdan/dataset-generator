@@ -1,6 +1,6 @@
 import { create } from './lib';
 
-describe('Lib', () => {
+describe('lib.ts', () => {
   it('should return produce fn', () => {
     const dumbData = {};
     expect(typeof create(dumbData)).toBe('function');
