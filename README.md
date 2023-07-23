@@ -69,14 +69,18 @@ const dataset = produce(10);
 ```js
 import { create, DEFINED } from 'mock-data-generator';
 
-const produce  = create({
+const dataset  = create({
   id: DEFINED.ID,
   name: ['John', 'Paul', 'Joe'],
   // it will create string like 'Hello John' 
   greeting: ['Hello {name}'],
-});
+  address: {
+    street: ['Don', 'Ave'],
+    number: [12, 20],
+    // Nested object supported
+    line: ['{address.street} {address.number}']
+  }
+})(10);
 
-// {id: number, name: string, greeting: string}[]
-const dataset = produce(10);
 
 
