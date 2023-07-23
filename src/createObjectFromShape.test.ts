@@ -66,4 +66,16 @@ describe('createObjectFromShape', () => {
     expect(obj.number).toBeNumber();
     expect(obj.number).not.toBeInteger();
   });
+
+  it('should support function as value', () => {
+    const shape = {
+      val: () => {
+        return 12;
+      },
+    };
+
+    const obj = createObjectFromShape(shape);
+
+    expect(obj.val).toBe(12);
+  });
 });

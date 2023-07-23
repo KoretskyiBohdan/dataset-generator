@@ -19,6 +19,8 @@ export const getRandomArrayValue: IGetRandomArrayValue = (array) => {
 
 export const isObject = (item: any) => Object.prototype.toString.call(item) === '[object Object]';
 
+export const isFunction = (item: any) => typeof item === 'function';
+
 export const isDefinedType = (value: any) => LIST_OF_DEFINED.includes(value);
 
 export const definedTypeResolver = (value: symbol, index: number) => {
