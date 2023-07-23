@@ -1,6 +1,5 @@
-import { isObject, getRandomNumber, getRandomFloatNumber } from './utils';
+import { isObject, isDefinedType, definedTypeResolver, getRandomArrayValue } from './utils';
 import { ShapeType, MapType } from './types';
-import { DEFINED } from './constants';
 
 interface ICreateObjectFromShape {
   <T extends ShapeType>(shape: T, index?: number): MapType<T>;
@@ -9,34 +8,16 @@ interface ICreateObjectFromShape {
 const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0) => {
   const obj = {};
 
-  Object.keys(shape).map((key) => {
-    const values = shape[key];
-
+  Object.keys(shape).forEach((key) => {
+    const value = shape[key];
     let resolvedValue = null;
 
-    if (Array.isArray(values)) {
-      const index = getRandomNumber(values.length - 1);
-      resolvedValue = values[index];
-    }
-
-    if (isObject(values)) {
+    if (Array.isArray(value)) {
+      resolvedValue = getRandomArrayValue(value);
+    } else if (isObject(value)) {
       resolvedValue = createObjectFromShape((shape as object)[key]);
-    }
-
-    if (values === DEFINED.ID) {
-      // index starts from zero
-      resolvedValue = index + 1;
-    }
-    if (values === DEFINED.DATE_NOW) {
-      resolvedValue = Date.now();
-    }
-
-    if (values === DEFINED.RANDOM_INTEGER) {
-      resolvedValue = getRandomNumber();
-    }
-
-    if (values === DEFINED.RANDOM_FLOAT) {
-      resolvedValue = getRandomFloatNumber();
+    } else if (isDefinedType(value)) {
+      resolvedValue = definedTypeResolver(value as symbol, index);
     }
 
     obj[key] = resolvedValue;
