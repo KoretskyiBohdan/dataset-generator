@@ -6,3 +6,5 @@ export const DEFINED = {
 };
 
 export const MAX_FLOAT_NUMBER = 10000;
+
+export const REFERENCE_REG_EXP = /{(\S+)}/g;

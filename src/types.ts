@@ -2,6 +2,8 @@ export type ValueType = string | number | boolean;
 
 export type AnyFn = (...args: any[]) => any;
 
+export type AnyObject = Record<string, any>;
+
 export type ShapeType = {
   [key: string]: ValueType[] | Symbol | ShapeType | AnyFn;
 };

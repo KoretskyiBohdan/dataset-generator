@@ -78,4 +78,17 @@ describe('createObjectFromShape', () => {
 
     expect(obj.val).toBe(12);
   });
+
+  it('should supports reference to the other value', () => {
+    const shape = {
+      id: DEFINED.ID,
+      name: ['John', 'Paul', 'Joe'],
+      greeting: ['Hello {name}'],
+    };
+
+    const obj = createObjectFromShape(shape);
+
+    expect(obj.greeting).toBeString();
+    expect(obj.greeting).toBeOneOf(['Hello John', 'Hello Paul', 'Hello Joe']);
+  });
 });
