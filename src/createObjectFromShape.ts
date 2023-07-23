@@ -1,4 +1,4 @@
-import { getRandomNumber } from './utils';
+import { getRandomNumber, getRandomFloatNumber } from './utils';
 import { ShapeType, MapType } from './types';
 import { DEFINED } from './constants';
 
@@ -25,6 +25,14 @@ const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0) => {
     }
     if (values === DEFINED.DATE_NOW) {
       resolvedValue = Date.now();
+    }
+
+    if (values === DEFINED.RANDOM_INTEGER) {
+      resolvedValue = getRandomNumber();
+    }
+
+    if (values === DEFINED.RANDOM_FLOAT) {
+      resolvedValue = getRandomFloatNumber();
     }
 
     obj[key] = resolvedValue;

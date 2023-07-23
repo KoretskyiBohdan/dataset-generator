@@ -1,4 +1,4 @@
-import { getRandomNumber } from './utils';
+import { getRandomNumber, getRandomFloatNumber } from './utils';
 
 describe('Utils test', () => {
   describe('getRandomNumber', () => {
@@ -11,6 +11,15 @@ describe('Utils test', () => {
       const number = getRandomNumber(max);
       expect(number).toBeInteger();
       expect(number).toBeLessThan(max);
+    });
+  });
+
+  describe('getRandomFloatNumber', () => {
+    it('should return a float number', () => {
+      const number = getRandomFloatNumber();
+
+      expect(number).toBeNumber();
+      expect(number).not.toBeInteger();
     });
   });
 });

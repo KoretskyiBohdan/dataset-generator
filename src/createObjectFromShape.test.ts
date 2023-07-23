@@ -45,4 +45,25 @@ describe('createObjectFromShape', () => {
 
     expect(obj.date).toBe(timestamp);
   });
+
+  it('should supports defined RANDON_INTEGER type', () => {
+    const shape = {
+      number: DEFINED.RANDOM_INTEGER,
+    };
+
+    const obj = createObjectFromShape(shape);
+
+    expect(obj.number).toBeInteger();
+  });
+
+  it('should supports defined RANDOM_FLOAT type', () => {
+    const shape = {
+      number: DEFINED.RANDOM_FLOAT,
+    };
+
+    const obj = createObjectFromShape(shape);
+
+    expect(obj.number).toBeNumber();
+    expect(obj.number).not.toBeInteger();
+  });
 });
