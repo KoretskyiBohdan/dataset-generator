@@ -1,8 +1,8 @@
 import createObjectFromShape from './createObjectFromShape';
-import { MapType } from './types';
+import { ShapeType, MapType } from './types';
 
 export interface ICreate {
-  <T>(shape: T): (count?: number) => MapType<T>[];
+  <T extends ShapeType>(shape: T): (count?: number) => MapType<T>[];
 }
 
 export const create: ICreate = (shape) => {
@@ -10,7 +10,7 @@ export const create: ICreate = (shape) => {
     const results: MapType<typeof shape>[] = [];
 
     for (let i = 0; i !== count; i++) {
-      results.push(createObjectFromShape(shape));
+      results.push(createObjectFromShape(shape, i));
     }
 
     return results;
