@@ -12,9 +12,9 @@ interface ICreateObjectFromShape {
 }
 /**
  *
- * @param shape - data source and shae reference
+ * @param shape - data source and shape reference
  * @param index - current object index
- * @returns
+ * @returns {object}
  */
 const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0) => {
   const obj = {};
