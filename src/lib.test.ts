@@ -1,3 +1,4 @@
+import { DEFINED } from './constants';
 import { create } from './lib';
 
 describe('lib.ts', () => {
@@ -94,7 +95,7 @@ describe('lib.ts', () => {
     expect(user.name.last).toBeOneOf(dumbData.name.last);
   });
 
-  it('should any level of nested objects', () => {
+  it('should support any level of nested objects', () => {
     const dumbData = {
       address: {
         street: {
@@ -111,5 +112,15 @@ describe('lib.ts', () => {
     expect(data).toHaveProperty('address');
     expect(data.address.street.number).toBeOneOf(dumbData.address.street.number);
     expect(data.address.street.name).toBeOneOf(dumbData.address.street.name);
+  });
+
+  it('should create an incrimental ids', () => {
+    const data = create({
+      id: DEFINED.ID,
+    })(5);
+
+    const expectedIds = [1, 2, 3, 4, 5];
+
+    expect(data.map((item) => item.id)).toStrictEqual(expectedIds);
   });
 });
