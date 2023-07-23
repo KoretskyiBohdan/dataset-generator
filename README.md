@@ -65,5 +65,18 @@ const produce  = create({
 // {id: number, name: {first: string, last: string}}[]
 const dataset = produce(10);
 ```
+5) With reference.
+```js
+import { create, DEFINED } from 'mock-data-generator';
+
+const produce  = create({
+  id: DEFINED.ID,
+  name: ['John', 'Paul', 'Joe'],
+  // it will create string like 'Hello John' 
+  greeting: ['Hello {name}'],
+});
+
+// {id: number, name: string, greeting: string}[]
+const dataset = produce(10);
 
 
