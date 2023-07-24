@@ -19,7 +19,7 @@ describe('utils.ts', () => {
       const max = 100;
       const number = getRandomNumber(max);
       expect(number).toBeInteger();
-      expect(number).toBeLessThan(max);
+      expect(number).toBeLessThanOrEqual(max);
     });
   });
 

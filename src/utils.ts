@@ -5,7 +5,9 @@ import { isString } from './guards';
 export const getRandomNumber = (max = Number.MAX_SAFE_INTEGER) => Math.round(Math.random() * max);
 
 export const getRandomFloatNumber = (fraction = 2) => {
-  return Number((Math.random() * MAX_FLOAT_NUMBER).toFixed(fraction));
+  const v = Number((Math.random() * MAX_FLOAT_NUMBER).toFixed(fraction));
+  // Sometimes it could generate numbers like 10.00 which is integer
+  return Number.isInteger(v) ? getRandomFloatNumber(fraction) : v;
 };
 
 export const getRandomArrayValue = <T extends any[]>(array: T): T[0] => {
