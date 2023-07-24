@@ -1,4 +1,4 @@
-# mock-data-generator
+# dataset-generator
 
 ### Motivation
 
