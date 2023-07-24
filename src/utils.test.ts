@@ -253,8 +253,9 @@ describe('utils.ts', () => {
 
       expect(definedTypeResolver(DEFINED.ID, index)).toBe(1);
       expect(definedTypeResolver(DEFINED.DATE_NOW, index)).toBeInteger();
-      expect(definedTypeResolver(DEFINED.RANDOM_INTEGER, index)).toBeInteger();
-      expect(definedTypeResolver(DEFINED.RANDOM_FLOAT, index)).not.toBeInteger();
+      expect(definedTypeResolver(DEFINED.INTEGER, index)).toBeInteger();
+      expect(definedTypeResolver(DEFINED.FLOAT, index)).not.toBeInteger();
+      expect(definedTypeResolver(DEFINED.BOOLEAN, index)).toBeBoolean();
     });
 
     it('should return nothing for a non existing type', () => {

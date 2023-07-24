@@ -88,10 +88,12 @@ export const definedTypeResolver = (value: symbol, index: number) => {
       return index + 1;
     case DEFINED.DATE_NOW:
       return Date.now();
-    case DEFINED.RANDOM_INTEGER:
+    case DEFINED.INTEGER:
       return getRandomNumber();
-    case DEFINED.RANDOM_FLOAT:
+    case DEFINED.FLOAT:
       return getRandomFloatNumber();
+    case DEFINED.BOOLEAN:
+      return Boolean(getRandomNumber(1));
     default:
       return undefined;
   }

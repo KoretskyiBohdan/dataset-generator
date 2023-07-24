@@ -48,9 +48,9 @@ describe('createObjectFromShape.ts', () => {
     expect(Math.abs(obj.date - timestamp)).toBeLessThan(allowedDiff);
   });
 
-  it('should supports defined RANDON_INTEGER type', () => {
+  it('should supports defined INTEGER type', () => {
     const shape = {
-      number: DEFINED.RANDOM_INTEGER,
+      number: DEFINED.INTEGER,
     };
 
     const obj = createObjectFromShape(shape);
@@ -58,9 +58,9 @@ describe('createObjectFromShape.ts', () => {
     expect(obj.number).toBeInteger();
   });
 
-  it('should supports defined RANDOM_FLOAT type', () => {
+  it('should supports defined FLOAT type', () => {
     const shape = {
-      number: DEFINED.RANDOM_FLOAT,
+      number: DEFINED.FLOAT,
     };
 
     const obj = createObjectFromShape(shape);
