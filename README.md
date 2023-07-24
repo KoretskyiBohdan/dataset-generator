@@ -38,8 +38,10 @@ const produce  = create({
   id: DEFINED.ID,
   // it will create date timestamp 
   now: DEFINED.DATE_NOW,
-  quantity: DEFINED.RANDOM_INTEGER,
-  price: DEFINED.RANDOM_FLOAT
+  // random integer
+  quantity: DEFINED.INTEGER,
+  // random float 
+  price: DEFINED.FLOAT
 });
 
 // {id: number, now: number; quantity: number, price: number}[]
