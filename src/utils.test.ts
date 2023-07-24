@@ -11,6 +11,7 @@ import {
   definedTypeResolver,
 } from './utils';
 import { DEFINED } from './constants';
+import { ReferencesListType } from './types';
 
 describe('utils.ts', () => {
   describe('getRandomNumber', () => {
@@ -234,7 +235,7 @@ describe('utils.ts', () => {
         x: 12,
       };
 
-      const references = [
+      const references: ReferencesListType = [
         ['y', 'there is {x}'],
         ['z', 'and here is {x}'],
       ];

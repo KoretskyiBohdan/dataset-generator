@@ -8,6 +8,8 @@ export type ShapeType = {
   [key: string]: ValueType[] | Symbol | ShapeType | AnyFn;
 };
 
+export type ReferencesListType = [path: string, value: string][];
+
 export type ResultType<Type> = {
   [Property in keyof Type]: Type[Property] extends Array<any>
     ? Type[Property][0]

@@ -6,7 +6,7 @@ import {
   createPropsByReferences,
 } from './utils';
 import { isFunction, isString, isObject, isDefinedType } from './guards';
-import { ShapeType, ResultType, AnyObject } from './types';
+import { ShapeType, ResultType, AnyObject, ReferencesListType } from './types';
 
 interface ICreateObjectFromShape {
   <T extends ShapeType>(shape: T, index?: number): ResultType<T>;
@@ -21,7 +21,7 @@ const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0) => {
   // Motivation: JS doesn't guarantee iteration order for objects.
   // Only way to make sure that all properties we have reference to already created
   // is postpone reference resolve after other props will be created
-  const references: string[][] = [];
+  const references: ReferencesListType = [];
 
   /**
    * Original shape object could has nested levels, so need to work with it in a recursive way.

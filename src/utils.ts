@@ -1,4 +1,4 @@
-import { AnyObject } from './types';
+import { AnyObject, ReferencesListType } from './types';
 import { MAX_FLOAT_NUMBER, DEFINED, REFERENCE_REG_EXP } from './constants';
 import { isObject, isString } from './guards';
 
@@ -72,7 +72,7 @@ export const resolveReference = (root: AnyObject, value: string) => {
   });
 };
 
-export const createPropsByReferences = <T>(obj: T, references: string[][] = []): T => {
+export const createPropsByReferences = <T>(obj: T, references: ReferencesListType = []): T => {
   for (let i = 0; i < references.length; i++) {
     const [path, value] = references[i];
     const resolved = resolveReference(obj, value);
