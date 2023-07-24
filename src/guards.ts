@@ -1,5 +1,5 @@
 import { AnyFn, AnyObject } from './types';
-import { DEFINED } from './constants';
+import { DEFINED } from './defined';
 
 const LIST_OF_DEFINED = Object.keys(DEFINED).map<symbol>((key) => DEFINED[key]);
 

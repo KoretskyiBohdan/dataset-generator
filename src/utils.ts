@@ -1,6 +1,9 @@
 import { AnyObject, ReferencesListType } from './types';
-import { MAX_FLOAT_NUMBER, DEFINED, REFERENCE_REG_EXP } from './constants';
+import { DEFINED, DefinedTypeValue } from './defined';
 import { isObject, isString } from './guards';
+
+export const MAX_FLOAT_NUMBER = 10000;
+export const REFERENCE_REG_EXP = /{(\S+)}/g;
 
 export const getRandomNumber = (max = Number.MAX_SAFE_INTEGER) => Math.round(Math.random() * max);
 
@@ -82,7 +85,7 @@ export const createPropsByReferences = <T>(obj: T, references: ReferencesListTyp
   return obj;
 };
 
-export const definedTypeResolver = (value: symbol, index: number) => {
+export const definedTypeResolver = (value: DefinedTypeValue, index: number) => {
   switch (value) {
     case DEFINED.ID:
       return index + 1;

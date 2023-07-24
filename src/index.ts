@@ -1,2 +1,2 @@
 export * from './lib';
-export { DEFINED } from './constants';
+export { DEFINED } from './defined';

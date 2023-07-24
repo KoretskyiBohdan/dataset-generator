@@ -1,5 +1,5 @@
 import { isObject, isFunction, isString, isDefinedType } from './guards';
-import { DEFINED } from './constants';
+import { DEFINED } from './defined';
 
 describe('guards.ts', () => {
   describe('isObject', () => {

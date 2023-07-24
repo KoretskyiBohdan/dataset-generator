@@ -1,4 +1,4 @@
-import { DEFINED } from './constants';
+import { DEFINED } from './defined';
 import { create } from './lib';
 
 describe('lib.ts', () => {

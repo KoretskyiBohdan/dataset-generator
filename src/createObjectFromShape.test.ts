@@ -1,5 +1,5 @@
 import createObjectFromShape from './createObjectFromShape';
-import { DEFINED } from './constants';
+import { DEFINED } from './defined';
 
 describe('createObjectFromShape.ts', () => {
   it('should supports defined ID type', () => {

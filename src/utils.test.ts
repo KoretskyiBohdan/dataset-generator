@@ -10,7 +10,7 @@ import {
   createPropsByReferences,
   definedTypeResolver,
 } from './utils';
-import { DEFINED } from './constants';
+import { DEFINED, DefinedTypeValue } from './defined';
 import { ReferencesListType } from './types';
 
 describe('utils.ts', () => {
@@ -260,7 +260,7 @@ describe('utils.ts', () => {
 
     it('should return nothing for a non existing type', () => {
       const index = 0;
-      const nonExistingType = Symbol('type');
+      const nonExistingType = 'TYPE' as DefinedTypeValue;
       expect(definedTypeResolver(nonExistingType, index)).toBe(undefined);
     });
   });
