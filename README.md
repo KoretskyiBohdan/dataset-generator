@@ -10,6 +10,11 @@ according provided object shape.
 3) Can be used with you own data or other solutions.
 4) Supports computed values and reference to already created fields.
 
+### Whot to install
+```js
+npm i dataset-generator
+```
+
 ### How to use
 
 1) Simple example:
