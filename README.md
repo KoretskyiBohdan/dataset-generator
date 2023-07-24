@@ -10,7 +10,7 @@ according provided object shape.
 3) Can be used with you own data or other solutions.
 4) Supports computed values and reference to already created fields.
 
-### Whot to install
+### How to install
 ```js
 npm i dataset-generator
 ```
@@ -97,6 +97,14 @@ const dataset  = create({
     // Nested object supported
     line: ['{address.street} {address.number}']
   }
+})(10);
+
+
+const users = create({
+  id: DEFINED.ID,
+  // props order doesn't matter - all refrences will be resolved after main processing
+  greeting: ['Hello {name}'],
+  name: ['John', 'Paul', 'Joe'],
 })(10);
 
 
