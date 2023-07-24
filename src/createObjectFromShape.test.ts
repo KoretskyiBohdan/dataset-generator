@@ -93,4 +93,33 @@ describe('createObjectFromShape.ts', () => {
     expect(obj.greeting).toBeString();
     expect(obj.greeting).toBeOneOf(['Hello John', 'Hello Paul', 'Hello Joe']);
   });
+
+  it('should support reference dispite props creation order', () => {
+    const shape = {
+      id: DEFINED.ID,
+      greeting: ['Hello {name}'],
+      name: ['John', 'Paul', 'Joe'],
+    };
+
+    const obj = createObjectFromShape(shape);
+
+    expect(obj.greeting).toBeString();
+    expect(obj.greeting).toBeOneOf(['Hello John', 'Hello Paul', 'Hello Joe']);
+  });
+
+  it('should support any level reference dispite props creation order', () => {
+    const shape = {
+      id: DEFINED.ID,
+      messages: {
+        greeting: ['Hello {name.first}'],
+      },
+      name: {
+        first: ['John', 'Paul', 'Joe'],
+      },
+    };
+
+    const obj = createObjectFromShape(shape);
+
+    expect(obj.messages.greeting).toBeOneOf(['Hello John', 'Hello Paul', 'Hello Joe']);
+  });
 });

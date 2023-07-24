@@ -1,12 +1,13 @@
 import { AnyObject } from './types';
 import { MAX_FLOAT_NUMBER, DEFINED, REFERENCE_REG_EXP } from './constants';
-import { isString } from './guards';
+import { isObject, isString } from './guards';
 
 export const getRandomNumber = (max = Number.MAX_SAFE_INTEGER) => Math.round(Math.random() * max);
 
 export const getRandomFloatNumber = (fraction = 2) => {
   const v = Number((Math.random() * MAX_FLOAT_NUMBER).toFixed(fraction));
-  // Sometimes it could generate numbers like 10.00 which is integer
+  // Sometimes it could generate numbers like 10.00 which is not an integer
+  // So need to re run func in this case
   return Number.isInteger(v) ? getRandomFloatNumber(fraction) : v;
 };
 
@@ -17,25 +18,51 @@ export const getRandomArrayValue = <T extends any[]>(array: T): T[0] => {
 
 export const isItHasAReference = (v: string) => REFERENCE_REG_EXP.test(v);
 
+export const createPropertyPath = (root: string, key: string) => (root ? `${root}.${key}` : key);
+
 /**
  *
- * @param obj {object}
- * @param path - path to the ptoperty. Should looks like 'property.property.property'
+ * @param {object} target
+ * @param {string} path - path to the value. Should looks like 'property.property.property'
  * @returns {any}
  */
-export const getObjectProperty = (obj: AnyObject, path = ''): any => {
-  if (!isString(path)) return;
+export const getObjectProperty = (target: AnyObject, path = ''): any => {
+  if (!isString(path) || !isObject(target)) return;
 
   const pathArr = path.split('.');
-  let result = obj;
+  let prop = target;
 
   while (pathArr.length) {
     const propName = pathArr.shift();
 
-    result = result?.[propName];
+    prop = prop?.[propName];
   }
 
-  return result;
+  return prop;
+};
+
+/**
+ * Set value to the property by path
+ * @param {object} target
+ * @param {string} path - path to the value. Should looks like 'property.property.property'
+ * @param {any} value
+ * @returns
+ */
+export const setObjectProperty = (target: AnyObject, path = '', value: any) => {
+  if (!isString(path) || !isObject(target)) return target;
+
+  const pathArr = path.split('.');
+  let key = pathArr.shift();
+  let reference = target;
+
+  while (pathArr.length) {
+    reference = reference?.[key];
+    key = pathArr.shift();
+  }
+
+  if (key && reference) reference[key] = value;
+
+  return target;
 };
 
 export const resolveReference = (root: AnyObject, value: string) => {
@@ -43,6 +70,16 @@ export const resolveReference = (root: AnyObject, value: string) => {
     const resolved = getObjectProperty(root, path);
     return resolved !== undefined ? resolved : _;
   });
+};
+
+export const createPropsByReferences = <T>(obj: T, references: string[][] = []): T => {
+  for (let i = 0; i < references.length; i++) {
+    const [path, value] = references[i];
+    const resolved = resolveReference(obj, value);
+    setObjectProperty(obj, path, resolved);
+  }
+
+  return obj;
 };
 
 export const definedTypeResolver = (value: symbol, index: number) => {

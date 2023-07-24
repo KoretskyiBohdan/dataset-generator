@@ -3,8 +3,11 @@ import {
   getRandomFloatNumber,
   getRandomArrayValue,
   isItHasAReference,
+  createPropertyPath,
   getObjectProperty,
+  setObjectProperty,
   resolveReference,
+  createPropsByReferences,
   definedTypeResolver,
 } from './utils';
 import { DEFINED } from './constants';
@@ -66,6 +69,20 @@ describe('utils.ts', () => {
     });
   });
 
+  describe('createPropertyPath', () => {
+    it('should return correct path string', () => {
+      const root = 'a.v';
+      expect(createPropertyPath(root, 'x')).toBe('a.v.x');
+    });
+    it('should return key if root is not provided', () => {
+      const key = 'x';
+
+      expect(createPropertyPath(undefined, key)).toBe(key);
+      expect(createPropertyPath(null, key)).toBe(key);
+      expect(createPropertyPath('', key)).toBe(key);
+    });
+  });
+
   describe('getObjectProperty', () => {
     it('should return property value by path', () => {
       const obj = {
@@ -89,6 +106,30 @@ describe('utils.ts', () => {
       expect(getObjectProperty(obj, 'data.z')).toBe(undefined);
       expect(getObjectProperty(obj, '')).toBe(undefined);
       expect(getObjectProperty(obj, null)).toBe(undefined);
+    });
+  });
+
+  describe('setObjectProperty', () => {
+    it('should set property value by path', () => {
+      const value = 12;
+      expect(setObjectProperty({}, 'data', value)).toHaveProperty('data', value);
+      expect(setObjectProperty({ data: {} }, 'data.x', value)).toHaveProperty('data.x', value);
+      expect(setObjectProperty({ data: {} }, 'data.y', value)).toHaveProperty('data.y', value);
+    });
+
+    it('should do nothing if path doesnt exists', () => {
+      const obj = {};
+      const fakePath = 'prop.name';
+
+      expect(setObjectProperty(obj, fakePath, 12)).toBe(obj);
+    });
+
+    it('should return an original value if first argument is not an object', () => {
+      const fn = () => null;
+      expect(setObjectProperty(null, 'data', 12)).toBe(null);
+      expect(setObjectProperty([], 'data', 12)).toStrictEqual([]);
+      expect(setObjectProperty([12, 33], 'data', 12)).toStrictEqual([12, 33]);
+      expect(setObjectProperty(fn, 'data', 12)).toStrictEqual(fn);
     });
   });
 
@@ -184,6 +225,24 @@ describe('utils.ts', () => {
       const expected = 'value: null';
 
       expect(resolveReference(root, value)).toBe(expected);
+    });
+  });
+
+  describe('createPropsByReferences', () => {
+    it('should resolve array of references', () => {
+      const obj = {
+        x: 12,
+      };
+
+      const references = [
+        ['y', 'there is {x}'],
+        ['z', 'and here is {x}'],
+      ];
+
+      const resolved = createPropsByReferences(obj, references);
+
+      expect(resolved).toHaveProperty('y', 'there is 12');
+      expect(resolved).toHaveProperty('z', 'and here is 12');
     });
   });
 

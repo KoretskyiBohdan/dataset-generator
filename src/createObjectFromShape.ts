@@ -2,7 +2,8 @@ import {
   definedTypeResolver,
   getRandomArrayValue,
   isItHasAReference,
-  resolveReference,
+  createPropertyPath,
+  createPropsByReferences,
 } from './utils';
 import { isFunction, isString, isObject, isDefinedType } from './guards';
 import { ShapeType, ResultType, AnyObject } from './types';
@@ -17,8 +18,20 @@ interface ICreateObjectFromShape {
  * @returns {object}
  */
 const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0) => {
-  // "shape" object can have nested levels, so need to use recursive resolver
-  const recursiveResolver = (currentLevelShape: ShapeType, ref?: AnyObject) => {
+  // Motivation: JS doesn't guarantee iteration order for objects.
+  // Only way to make sure that all properties we have reference to already created
+  // is postpone reference resolve after other props will be created
+  const references: string[][] = [];
+
+  /**
+   * Original shape object could has nested levels, so need to work with it in a recursive way.
+   *
+   * @param {ShapeType} currentLevelShape - shape on current level
+   * @param {object} ref - reference to the root
+   * @param {string} pathFromRoot - path from root to the current level
+   * @returns {object}
+   */
+  const recursiveResolver = (currentLevelShape: ShapeType, ref?: AnyObject, pathFromRoot = '') => {
     const currentLevelObj = {};
     // if we are on the top level than root is this level object
     const root = ref || currentLevelObj;
@@ -33,12 +46,15 @@ const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0) => {
         resolvedValue = getRandomArrayValue(value);
 
         if (isString(resolvedValue) && isItHasAReference(resolvedValue)) {
-          resolvedValue = resolveReference(root, resolvedValue);
+          const propPath = createPropertyPath(pathFromRoot, key);
+          references.push([propPath, resolvedValue]);
+          continue;
         }
       } else if (isFunction(value)) {
         resolvedValue = value(index);
       } else if (isObject(value)) {
-        resolvedValue = recursiveResolver(value, root);
+        const propPath = createPropertyPath(pathFromRoot, key);
+        resolvedValue = recursiveResolver(value as ShapeType, root, propPath);
       } else if (isDefinedType(value)) {
         resolvedValue = definedTypeResolver(value, index);
       }
@@ -49,7 +65,9 @@ const createObjectFromShape: ICreateObjectFromShape = (shape, index = 0) => {
     return currentLevelObj as ResultType<typeof shape>;
   };
 
-  return recursiveResolver(shape);
+  const root = recursiveResolver(shape);
+
+  return createPropsByReferences(root, references);
 };
 
 export default createObjectFromShape;

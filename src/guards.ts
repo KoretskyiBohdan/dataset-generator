@@ -1,9 +1,9 @@
-import { ShapeType, AnyFn } from './types';
+import { AnyFn, AnyObject } from './types';
 import { DEFINED } from './constants';
 
 const LIST_OF_DEFINED = Object.keys(DEFINED).map<symbol>((key) => DEFINED[key]);
 
-export const isObject = (v: any): v is ShapeType => {
+export const isObject = (v: any): v is AnyObject => {
   return Object.prototype.toString.call(v) === '[object Object]';
 };
 
