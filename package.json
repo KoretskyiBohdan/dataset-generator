@@ -1,7 +1,7 @@
 {
   "name": "dataset-generator",
   "version": "1.0.2",
-  "description": "",
+  "description": "A simple generator with zero dependencies",
   "source": "src/index.ts",
   "main": "dist/main.js",
   "types": "dist/types.d.ts",
@@ -15,8 +15,12 @@
     "type": "git",
     "url": "git+https://github.com/KoretskyiBohdan/dataset-generator.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "mock",
+    "generator",
+    "dataset"
+  ],
+  "author": "Bohdan Koretskyi",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/KoretskyiBohdan/dataset-generator/issues"
