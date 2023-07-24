@@ -1,5 +1,15 @@
 # mock-data-generator
 
+### Motivation
+
+This simple data mock generator which use provided lists of data to generate random combination of values
+according provided object shape.
+
+1) Has strong TypeScript support (created objects have inferred type from provided data).
+2) Bundle has zero dependencies.
+3) Can be used with you own data or other solutions.
+4) Supports computed values and reference to already created fields.
+
 ### How to use
 
 1) Simple example:
@@ -69,14 +79,18 @@ const dataset = produce(10);
 ```js
 import { create, DEFINED } from 'mock-data-generator';
 
-const produce  = create({
+const dataset  = create({
   id: DEFINED.ID,
   name: ['John', 'Paul', 'Joe'],
   // it will create string like 'Hello John' 
   greeting: ['Hello {name}'],
-});
+  address: {
+    street: ['Don', 'Ave'],
+    number: [12, 20],
+    // Nested object supported
+    line: ['{address.street} {address.number}']
+  }
+})(10);
 
-// {id: number, name: string, greeting: string}[]
-const dataset = produce(10);
 
 
