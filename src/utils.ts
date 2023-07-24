@@ -39,7 +39,7 @@ export const getObjectProperty = (obj: AnyObject, path = ''): any => {
 export const resolveReference = (root: AnyObject, value: string) => {
   return value.replaceAll(REFERENCE_REG_EXP, (_, path) => {
     const resolved = getObjectProperty(root, path);
-    return resolved !== undefined ? resolved : `{${path}}`;
+    return resolved !== undefined ? resolved : _;
   });
 };
 
