@@ -1,6 +1,6 @@
 {
   "name": "dataset-generator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple generator with zero dependencies",
   "source": "src/index.ts",
   "main": "dist/main.js",
