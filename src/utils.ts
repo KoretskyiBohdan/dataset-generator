@@ -19,7 +19,7 @@ export const getRandomArrayValue = <T extends any[]>(array: T): T[0] => {
   return array[index];
 };
 
-export const isItHasAReference = (v: string) => REFERENCE_REG_EXP.test(v);
+export const isItHasAReference = (v: string) => /{(\S+)}/.test(v);
 
 export const createPropertyPath = (root: string, key: string) => (root ? `${root}.${key}` : key);
 
